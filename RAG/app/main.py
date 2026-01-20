@@ -1,11 +1,9 @@
 import sys
 import os
+import pickle
 
 # Add the project root (parent of app/) to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-import os
-import pickle
 
 
 from loaders.document_loader import load_documents
@@ -34,25 +32,32 @@ def main():
         print(f"Loading processed chunks from {CHUNKS_FILE}...")
         with open(CHUNKS_FILE, "rb") as f:
             chunks = pickle.load(f)
+
+        if not chunks:
+            raise ValueError("Chunks file exists but is empty.")
+
         print(f"Loaded {len(chunks)} chunks.")
+
     else:
         print("Loading raw documents...")
         documents = load_documents(RAW_DATA_PATH)
         print(f"Loaded {len(documents)} documents.")
 
+        if not documents:
+            raise ValueError("No documents found in RAW_DATA_PATH.")
+
         print("Splitting documents into chunks...")
         chunks = split_documents(documents)
         print(f"Created {len(chunks)} chunks.")
 
-        # Save chunks for future use
-        os.makedirs(os.path.dirname(PROCESSED_DATA_PATH), exist_ok=True)
+        if not chunks:
+            raise ValueError("Chunking failed. No chunks were created.")
+
+        os.makedirs(os.path.dirname(CHUNKS_FILE), exist_ok=True)
         with open(CHUNKS_FILE, "wb") as f:
             pickle.dump(chunks, f)
-        print(f"Saved chunks to {CHUNKS_FILE}.")
 
-    print("Splitting documents into chunks...")
-    chunks = split_documents(documents)
-    print(f"Created {len(chunks)} chunks.")
+        print(f"Saved chunks to {CHUNKS_FILE}.")
 
     print("Loading embedding model...")
     embedding_model = get_embedding_model()
