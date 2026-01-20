@@ -1,0 +1,11 @@
+import os
+
+RANDOM_STATE = 42
+TEST_SIZE = 0.25
+MAX_FEATURES = 3000
+EPOCHS = 10
+BATCH_SIZE = 32
+
+BASE_RESULTS_DIR = "Results"
+
+os.makedirs(BASE_RESULTS_DIR, exist_ok=True)

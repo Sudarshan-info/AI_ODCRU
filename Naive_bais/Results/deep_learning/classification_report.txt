@@ -1,0 +1,11 @@
+Deep Learning Accuracy: 0.6400
+
+              precision    recall  f1-score   support
+
+    negative       0.91      0.30      0.45        33
+     neutral       0.54      0.88      0.67        50
+    positive       0.79      0.62      0.69        42
+
+    accuracy                           0.64       125
+   macro avg       0.75      0.60      0.61       125
+weighted avg       0.72      0.64      0.62       125
